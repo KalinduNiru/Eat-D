@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "589876436220",
+    "project_id": "eat-d-app",
+    "storage_bucket": "eat-d-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:589876436220:android:d5f56fca41bb4ba73ecb79",
+        "android_client_info": {
+          "package_name": "com.ediclus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "589876436220-q18fg8e4h57glrv91229mtjelrirt5q3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4jYAUFfVPsI6u2sCxgzMdpUhZC2frK0o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "589876436220-q18fg8e4h57glrv91229mtjelrirt5q3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
