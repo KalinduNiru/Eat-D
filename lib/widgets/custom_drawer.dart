@@ -4,8 +4,15 @@ import '../constants/app_colors.dart';
 import '../screens/history_screen.dart';
 import '../screens/account_screen.dart';
 import '../screens/blog_screen.dart';
+import '../screens/on_board_screen.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
+
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class CustomDrawer extends StatelessWidget {
+
   final Function onClose;
 
   const CustomDrawer({Key key, this.onClose}) : super(key: key);
@@ -27,8 +34,12 @@ class CustomDrawer extends StatelessWidget {
     }
   }
 
+
+
   @override
+
   Widget build(BuildContext context) {
+
     return Drawer(
       child: Container(
         color: Colors.black12,
@@ -119,6 +130,22 @@ class CustomDrawer extends StatelessWidget {
                 style: TextStyle(color: AppColors.primaryColor),
               ),
             ),
+            ListTile(
+              leading: Icon(
+                Icons.work_off_outlined,
+                color: AppColors.primaryColor,
+              ),
+              title: Text(
+                'Log Out',
+                style: TextStyle(color: AppColors.primaryColor),
+              ),
+              onTap: () async {
+                //final User user = await _auth.currentUser;
+                await _auth.signOut();
+                Navigator.pushNamedAndRemoveUntil(
+                    context, OnBoardScreen.routeName, (route) => false);
+                },
+            ),
             Align(
               alignment: Alignment.bottomRight,
               child: Container(
@@ -139,3 +166,4 @@ class CustomDrawer extends StatelessWidget {
     );
   }
 }
+
