@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
@@ -6,6 +7,7 @@ import '../../constants/app_colors.dart';
 import '../../enum/gender_enum.dart';
 import '../../widgets/CustomDatePickerTextField.dart';
 import '../../utils/enum_util.dart';
+import '../../screens/auth/login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const routeName = '/register';
@@ -72,7 +74,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
-  void _signInWithEmailAndPassword() async {
+  void _login_page(){
+    Navigator.pushNamedAndRemoveUntil(
+        context, LogInScreen.routeName, (route) => false);
+  }
+
+  /*void _signInWithEmailAndPassword() async {
     final User user = (await _auth.signInWithEmailAndPassword(
       email: _usernameController.text,
       password: _passwordController.text,
@@ -88,7 +95,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _success = false;
       });
     }
-  }
+  }*/
 
   void _register() async {
     final User user = (await
@@ -110,6 +117,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -258,7 +270,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           borderRadius: BorderRadius.circular(20.0),
                         ),
                         padding: EdgeInsets.symmetric(horizontal: 40),
-                        onPressed: _register,
+                        onPressed: () async {
+                          if(_formKey.currentState.validate()){
+                            _register();
+                            _login_page();
+                           /* AlertDialog(
+                              title : Text ("Registration"),
+                              content : Text ("Registred to Eat'D"),
+                              actions: [
+                               FlatButton(
+                                 child: Text ('OK'),
+                                 onPressed: _login_page,
+                               )
+                              ],
+                            );*/
+                          }
+                        },
+
                       ),
                     ),
                   ],

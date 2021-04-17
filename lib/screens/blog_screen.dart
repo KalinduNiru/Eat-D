@@ -5,12 +5,16 @@ import '../models/blog.dart';
 import '../models/blogVideo.dart';
 import '../widgets/blog_item.dart';
 
+import '../screens/blog_post_add.dart';
+
 class BlogScreen extends StatefulWidget {
   static const routeName = '/blog';
 
   @override
   _BlogScreenState createState() => _BlogScreenState();
 }
+
+
 
 class _BlogScreenState extends State<BlogScreen> {
   List<Blog> _blogList = [
@@ -51,6 +55,11 @@ class _BlogScreenState extends State<BlogScreen> {
           'https://images.unsplash.com/photo-1524601500432-1e1a4c71d692?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MXx8YmVzdCUyMGZyaWVuZHN8ZW58MHx8MHw%3D&ixlib=rb-1.2.1&w=1000&q=80',
     ),
   ];
+
+  void _create_blog(){
+    Navigator.pushNamedAndRemoveUntil(
+        context, CreateBlog.routeName, (route) => false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -154,7 +163,7 @@ class _BlogScreenState extends State<BlogScreen> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0),
                     ),
-                    onPressed: () {},
+                    onPressed: _create_blog,
                   ),
                 ),
               ),

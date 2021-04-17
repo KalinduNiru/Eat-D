@@ -42,7 +42,7 @@ android {
         applicationId "com.ediclus"
         minSdkVersion 16
         targetSdkVersion 29
-        multiDexEnable true
+        multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -65,4 +65,11 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:26.8.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.android.support:multidex:1.0.3'
+    implementation "androidx.multidex:multidex:2.0.1"
+
+
+
 }
+
+
+

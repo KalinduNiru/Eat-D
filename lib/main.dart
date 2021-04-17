@@ -4,12 +4,21 @@ import './screens/on_board_screen.dart';
 import './utils/route_generator.dart';
 import './utils/material_color_genarator.dart';
 import './constants/app_colors.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-void main() {
+final FirebaseAuth _auth = FirebaseAuth.instance;
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -21,6 +30,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: OnBoardScreen.routeName,
       onGenerateRoute: RouteGenerator.generateRoute,
+
     );
   }
 }

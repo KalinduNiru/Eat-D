@@ -7,6 +7,7 @@ import '../screens/home_screen.dart';
 import '../screens/history_screen.dart';
 import '../screens/account_screen.dart';
 import '../screens/blog_screen.dart';
+import '../screens/blog_post_add.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings routeSettings) {
@@ -25,6 +26,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (context) => AccountScreen());
       case BlogScreen.routeName:
         return MaterialPageRoute(builder: (context) => BlogScreen());
+      case CreateBlog.routeName:
+        return MaterialPageRoute(builder: (context)=> CreateBlog());
     }
   }
 }

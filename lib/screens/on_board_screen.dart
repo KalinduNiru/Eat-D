@@ -5,12 +5,17 @@ import '../constants/app_colors.dart';
 import '../widgets/round_raised_button.dart';
 import '../screens/auth/login_screen.dart';
 import '../screens/auth/register_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class OnBoardScreen extends StatefulWidget {
   static const routeName = '/on-board';
 
+
+
   @override
+
   _OnBoardScreenState createState() => _OnBoardScreenState();
+
 }
 
 class _OnBoardScreenState extends State<OnBoardScreen> {

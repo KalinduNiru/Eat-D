@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import './../../utils/goole_sign_in.dart';
 
@@ -10,11 +11,12 @@ import '../../constants/app_colors.dart';
 import '../home_screen.dart';
 
 
+final FirebaseAuth _auth = FirebaseAuth.instance;
 class LogInScreen extends StatefulWidget {
   static const routeName = '/login';
 
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+
 
   @override
   _LogInScreenState createState() => _LogInScreenState();
@@ -25,6 +27,8 @@ class _LogInScreenState extends State<LogInScreen> {
 
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _success;
+  String _userEmail;
 
   String _validateUsername(String email) {
     if (email == null || email.isEmpty) return 'required';
@@ -53,6 +57,24 @@ class _LogInScreenState extends State<LogInScreen> {
         context, HomeScreen.routeName, (route) => false);
   }
 
+  void _signInWithEmailAndPassword() async {
+    final User user = (await _auth.signInWithEmailAndPassword(
+      email: _usernameController.text,
+      password: _passwordController.text,
+    )).user;
+
+    if (user != null) {
+      setState(() {
+        _success = true;
+        _userEmail = user.email;
+        _onSubmit();
+      });
+    } else {
+      setState(() {
+        _success = false;
+      });
+    }
+  }
 
 
   @override
@@ -118,7 +140,12 @@ class _LogInScreenState extends State<LogInScreen> {
                           borderRadius: BorderRadius.circular(20.0),
                         ),
                         padding: EdgeInsets.symmetric(horizontal: 40),
-                        onPressed: _onSubmit,
+                        onPressed: () async {
+                          if (_formKey.currentState.validate()){
+                            _signInWithEmailAndPassword();
+
+                          }
+                        },
                       ),
                     ),
                     Padding(padding: const EdgeInsets.all(20.0),
