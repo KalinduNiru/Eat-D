@@ -5,6 +5,8 @@ import '../screens/history_screen.dart';
 import '../screens/account_screen.dart';
 import '../screens/blog_screen.dart';
 import '../screens/on_board_screen.dart';
+import '../screens/chatbot.dart';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -31,6 +33,8 @@ class CustomDrawer extends StatelessWidget {
       case 3:
         Navigator.pushNamed(context, BlogScreen.routeName);
         break;
+      case 4 :
+        Navigator.pushNamed(context, Chatbot.routeName);
     }
   }
 
@@ -76,6 +80,7 @@ class CustomDrawer extends StatelessWidget {
                 'Chat with edisiuS',
                 style: TextStyle(color: AppColors.primaryColor),
               ),
+              onTap: () => _onItemClicked(context, 4),
             ),
             ListTile(
               leading: Icon(
