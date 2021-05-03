@@ -1,6 +1,7 @@
 class HistoryItem {
+  String id;
   DateTime dateTime;
   String description;
 
-  HistoryItem({this.dateTime, this.description});
+  HistoryItem({this.id, this.dateTime, this.description});
 }

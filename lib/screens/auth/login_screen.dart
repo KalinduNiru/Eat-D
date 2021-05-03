@@ -29,6 +29,7 @@ class _LogInScreenState extends State<LogInScreen> {
   final TextEditingController _passwordController = TextEditingController();
   bool _success;
   String _userEmail;
+  bool _isSigningIn = false;
 
   String _validateUsername(String email) {
     if (email == null || email.isEmpty) return 'required';
@@ -153,7 +154,18 @@ class _LogInScreenState extends State<LogInScreen> {
                           Buttons.Google,
                           text: "Sign up with Google",
 
-                          onPressed: (){},
+                          onPressed: () async {
+                            setState(() {
+                              _isSigningIn = true;
+                            });
+                            User user = await Authentication.signInWithGoogle(context: context);
+                            setState(() {
+                              _isSigningIn = false;
+                            });
+                            if (user != null){
+                              Navigator.pushNamed(context, HomeScreen.routeName);
+                            }
+                          },
 
                         ),
                     ),

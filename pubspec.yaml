@@ -20,6 +20,7 @@ version: 1.0.0+1
 environment:
   sdk: ">=2.7.0 <3.0.0"
 
+
 dependencies:
   flutter:
     sdk: flutter
@@ -43,6 +44,10 @@ dependencies:
   firebase_core: ^1.0.3
   dialog_flowtter: ^0.3.0
   bubble: ^1.1.9+1
+  firebase_database: ^6.1.2
+  flutter_rating_bar: ^4.0.0
+  uuid: ^3.0.4
+
 
 
   

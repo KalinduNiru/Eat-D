@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart' as firebase_core;
 
 import 'package:image_picker/image_picker.dart';
 import 'package:random_string/random_string.dart';
@@ -14,8 +16,20 @@ class CreateBlog extends StatefulWidget {
 }
 
 class _CreateBlogState extends State<CreateBlog> {
-  String authorName, title, desc;
 
+  firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  final TextEditingController _authorName = TextEditingController();
+  final TextEditingController _title = TextEditingController();
+  final TextEditingController _description = TextEditingController();
+
+
+  DatabaseReference dbRef = FirebaseDatabase.instance.reference().child("Blogs");
+
+
+  String authorName, title, desc;
   File selectedImage;
   bool _isLoading = false;
   CrudMethods crudMethods = new CrudMethods();
@@ -23,9 +37,7 @@ class _CreateBlogState extends State<CreateBlog> {
 
   Future getImage() async {
      final image = await _picker.getImage(source: ImageSource.gallery);
-
-
-    setState(() {
+     setState(() {
       selectedImage =  File(image.path);
     });
   }
@@ -39,10 +51,13 @@ class _CreateBlogState extends State<CreateBlog> {
       /// uploading image to firebase storage
       //StorageReference  = FirebaseStorage.instance
 
+
+
+
       firebase_storage.Reference firebaseStorageRef = firebase_storage.FirebaseStorage.instance
           .ref()
-          .child("blogImages")
-          .child("${randomAlphaNumeric(9)}.jpg");
+          .child("uploads/$selectedImage");
+
 
       final  firebase_storage.UploadTask task = firebaseStorageRef.putFile(selectedImage);
 

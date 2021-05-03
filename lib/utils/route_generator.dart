@@ -9,6 +9,7 @@ import '../screens/account_screen.dart';
 import '../screens/blog_screen.dart';
 import '../screens/blog_post_add.dart';
 import '../screens/chatbot.dart';
+import '../screens/daily_log.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings routeSettings) {
@@ -31,6 +32,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (context)=> CreateBlog());
       case Chatbot.routeName:
         return MaterialPageRoute(builder: (context) => Chatbot());
+      case DailyLogScreen.routeName:
+        return MaterialPageRoute(builder: (context) => DailyLogScreen());
     }
   }
 }

@@ -4,5 +4,5 @@ class Blog {
   String imgUrl;
   int likes;
 
-  Blog({this.title, this.category, this.imgUrl, this.likes = 0});
+  Blog({ this.title,  this.category,  this.imgUrl, this.likes = 0});
 }

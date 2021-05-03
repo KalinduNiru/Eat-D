@@ -5,23 +5,36 @@ import '../constants/app_colors.dart';
 import '../enum/gender_enum.dart';
 import '../utils/enum_util.dart';
 import '../widgets/CustomDatePickerTextField.dart';
+import '../utils/goole_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class AccountScreen extends StatefulWidget {
   static const routeName = '/profile';
 
+  const AccountScreen({ Key key,  User user})
+      : _user = user,
+  super (key: key);
+
+  final User _user;
   @override
   _AccountScreenState createState() => _AccountScreenState();
 }
 
 class _AccountScreenState extends State<AccountScreen> {
+  final dbRef = FirebaseDatabase.instance.reference().child("Users");
+
+
+   User _user;
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _contactNoController = TextEditingController();
-  DateTime _selectedBirthDay;
-  Gender _selectedGender;
+   DateTime _selectedBirthDay;
+   Gender _selectedGender;
 
   String _validateName(String name) {
     if (name == null || name.isEmpty) return 'required';
@@ -64,6 +77,19 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   @override
+  void initState() {
+    _user = widget._user;
+
+    super.initState();
+  }
+
+  void printFirebase(){
+    dbRef.once().then((DataSnapshot snapshot) {
+      print('Data : ${snapshot.value}');
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: 'Your Profile', appBar: AppBar()),
@@ -86,11 +112,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           shape: BoxShape.circle,
                           border: Border.all(color: Colors.grey, width: 2)),
                       child: Center(
-                        child: Icon(
-                          Icons.person,
-                          size: 80,
-                          color: Colors.white,
-                        ),
+                        child: Icon(Icons.person),
                       ),
                     ),
                     Align(
@@ -106,7 +128,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       controller: _nameController,
                       decoration: InputDecoration(
                         floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        labelText: 'Name',
+                        labelText: "",
                       ),
                       validator: _validateName,
                     ),
@@ -172,7 +194,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       controller: _usernameController,
                       decoration: InputDecoration(
                         floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        labelText: 'Email Address',
+                        labelText: "mail",
                       ),
                       validator: _validateUsername,
                     ),
@@ -180,7 +202,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       controller: _contactNoController,
                       decoration: InputDecoration(
                         floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        labelText: 'Contact Number',
+                        labelText:"phone",
                       ),
                       keyboardType: TextInputType.phone,
                       validator: _validateContactNo,
@@ -211,7 +233,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           borderRadius: BorderRadius.circular(20.0),
                         ),
                         padding: EdgeInsets.symmetric(horizontal: 40),
-                        onPressed: _onSubmit,
+                        onPressed: printFirebase,
                       ),
                     ),
                     Container(

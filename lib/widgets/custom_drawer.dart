@@ -6,6 +6,7 @@ import '../screens/account_screen.dart';
 import '../screens/blog_screen.dart';
 import '../screens/on_board_screen.dart';
 import '../screens/chatbot.dart';
+import '../screens/daily_log.dart';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -40,6 +41,7 @@ class CustomDrawer extends StatelessWidget {
 
 
 
+
   @override
 
   Widget build(BuildContext context) {
@@ -60,13 +62,15 @@ class CustomDrawer extends StatelessWidget {
                   textColor: Colors.white,
                   color: AppColors.secondaryColor,
                   child: Text(
-                    'Tell your Success Story',
+                    'Daily Log',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                   ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0),
                   ),
-                  onPressed: () {},
+                  onPressed: (){
+                    Navigator.pushNamed(context, DailyLogScreen.routeName);
+                  },
                 ),
               ),
             ),

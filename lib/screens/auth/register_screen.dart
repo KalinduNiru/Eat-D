@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
+import 'package:image_picker/image_picker.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 
 import '../../constants/app_colors.dart';
@@ -12,14 +16,13 @@ import '../../screens/auth/login_screen.dart';
 class RegisterScreen extends StatefulWidget {
   static const routeName = '/register';
 
-
-
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  var storage = FirebaseStorage.instance;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _nameController = TextEditingController();
@@ -27,9 +30,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
+  final TextEditingController _selectedGender = TextEditingController();
+  DatabaseReference dbRef = FirebaseDatabase.instance.reference().child("Users");
 
-  DateTime _selectedBirthDay;
-  Gender _selectedGender;
+
   bool _success;
   String _userEmail;
 
@@ -58,7 +63,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return null;
   }
 
-  String _validateGender(Gender gender) {
+  String _validateGender(String gender) {
     if (gender == null) return 'required';
     return null;
   }
@@ -67,37 +72,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (date == null) return 'required';
     return null;
   }
-
-  void _onSubmit() {
-    if (_formKey.currentState.validate()) {
-      // perform api request
-    }
-  }
-
+  
   void _login_page(){
     Navigator.pushNamedAndRemoveUntil(
         context, LogInScreen.routeName, (route) => false);
   }
+  
 
-  /*void _signInWithEmailAndPassword() async {
-    final User user = (await _auth.signInWithEmailAndPassword(
-      email: _usernameController.text,
-      password: _passwordController.text,
-    )).user;
-
-    if (user != null) {
-      setState(() {
-        _success = true;
-        _userEmail = user.email;
-      });
-    } else {
-      setState(() {
-        _success = false;
-      });
-    }
-  }*/
-
-  void _register() async {
+  /*void _register() async {
     final User user = (await
     _auth.createUserWithEmailAndPassword(
       email: _usernameController.text,
@@ -114,12 +96,46 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _success = true;
       });
     }
+  }*/
+
+  void _register(){
+    _auth.createUserWithEmailAndPassword(email: _usernameController.text, password: _passwordController.text)
+        .then((result) {
+          dbRef.child(result.user.uid).set({
+            'email' :_usernameController.text,
+            'name' : _nameController.text,
+            'dob' : _ageController.text,
+            'gender' : _selectedGender.text,
+          }).then((res){
+            _success = false;
+
+          });
+    }).catchError((err){
+      showDialog(context: context,
+          builder: (BuildContext context){
+        return AlertDialog(
+          title: Text("Error"),
+          content: Text(err.message),
+          actions: [
+            TextButton(onPressed: (){
+              Navigator.of(context).pop();
+            },
+            child: Text("OK!"),
+            )
+          ],
+        );
+          });
+    });
   }
+
 
   @override
   void dispose() {
     _usernameController.dispose();
     _passwordController.dispose();
+    _nameController.dispose();
+    _selectedGender.dispose();
+    _ageController.dispose();
     super.dispose();
   }
   Widget build(BuildContext context) {
@@ -171,63 +187,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       validator: _validateName,
                     ),
-                    CustomTextFieldDatePicker(
-                      labelText: 'Date of Birth',
-                      suffixIcon: Icon(Icons.calendar_today),
-                      lastDate: DateTime.now(),
-                      firstDate: DateTime(1960),
-                      onDateChanged: (selectedDate) {
-                        _selectedBirthDay = selectedDate;
-                      },
-                      validator: _validateBirthDay,
+                    TextField(
+                      controller: _ageController,
+                      decoration:InputDecoration(
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                        labelText: 'Age',
+                      ),
                     ),
-                    FormField<Gender>(
-                      builder: (FormFieldState<Gender> state) {
-                        return Column(
-                          children: [
-                            InputDecorator(
-                              decoration: InputDecoration(
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.auto,
-                                labelText: 'Gender',
-                              ),
-                              isEmpty: _selectedGender == null,
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton<Gender>(
-                                  value: _selectedGender,
-                                  isDense: true,
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      _selectedGender = newValue;
-                                      state.didChange(newValue);
-                                    });
-                                  },
-                                  items: Gender.values.map((value) {
-                                    return DropdownMenuItem<Gender>(
-                                      value: value,
-                                      child:
-                                          Text(EnumUtil().enumToString(value)),
-                                    );
-                                  }).toList(),
-                                ),
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: state.errorText == null
-                                  ? Text("")
-                                  : Padding(
-                                      padding: const EdgeInsets.only(top: 8.0),
-                                      child: Text(state.errorText,
-                                          style: TextStyle(
-                                              color: Colors.red[700],
-                                              fontSize: 12)),
-                                    ),
-                            ),
-                          ],
-                        );
-                      },
-                      validator: _validateGender,
+                    TextFormField(
+                      controller: _selectedGender,
+                      decoration: InputDecoration(
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                        labelText: 'Gender',
+                      ),
+                     validator: _validateGender,
                     ),
                     TextFormField(
                       controller: _usernameController,
@@ -273,8 +246,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         onPressed: () async {
                           if(_formKey.currentState.validate()){
                             _register();
-                            _login_page();
-                           /* AlertDialog(
+                            //_login_page();
+                           AlertDialog(
                               title : Text ("Registration"),
                               content : Text ("Registred to Eat'D"),
                               actions: [
@@ -283,7 +256,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                  onPressed: _login_page,
                                )
                               ],
-                            );*/
+                            );
                           }
                         },
 
