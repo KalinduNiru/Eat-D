@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:timelines/timelines.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../widgets/custom_appbar.dart';
 import '../models/history_item.dart';
@@ -9,7 +10,10 @@ import '../constants/app_colors.dart';
 
 class HistoryScreen extends StatelessWidget {
   static const routeName = '/history';
+  User user = FirebaseAuth.instance.currentUser;
+
   final dbRef = FirebaseDatabase.instance.reference().child("Daily Posts");
+
   List<Map<dynamic, dynamic>> lists = [];
   final dateFormat = DateFormat('dd MMMM yyyy');
   final List<HistoryItem> historyItems = [
@@ -32,7 +36,7 @@ class HistoryScreen extends StatelessWidget {
   ];
 
   bool isEdgeIndex(int index) {
-    return index == lists.length + 1;
+    return index == user.uid;
   }
 
  /* @override
@@ -124,9 +128,9 @@ class HistoryScreen extends StatelessWidget {
     return Scaffold(
         appBar: CustomAppBar(title: 'History', appBar: AppBar()),
         body: FutureBuilder(
-            future: dbRef.once(),
+            future: dbRef.orderByChild('userid').equalTo(user.uid).once(),
             builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
-              if (snapshot.hasData) {
+              if (snapshot.hasData)  {
                 lists.clear();
                 Map<dynamic, dynamic> values = snapshot.data.value;
                 values.forEach((key, values) {

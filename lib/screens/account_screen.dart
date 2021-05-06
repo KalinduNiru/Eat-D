@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/custom_appbar.dart';
@@ -12,21 +13,14 @@ import 'package:firebase_database/firebase_database.dart';
 class AccountScreen extends StatefulWidget {
   static const routeName = '/profile';
 
-  const AccountScreen({ Key key,  User user})
-      : _user = user,
-  super (key: key);
-
-  final User _user;
+  final User _user = FirebaseAuth.instance.currentUser;
   @override
   _AccountScreenState createState() => _AccountScreenState();
 }
 
 class _AccountScreenState extends State<AccountScreen> {
   final dbRef = FirebaseDatabase.instance.reference().child("Users");
-
-
-   User _user;
-
+  User _user;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _nameController = TextEditingController();
@@ -35,6 +29,11 @@ class _AccountScreenState extends State<AccountScreen> {
   final TextEditingController _contactNoController = TextEditingController();
    DateTime _selectedBirthDay;
    Gender _selectedGender;
+
+
+
+
+
 
   String _validateName(String name) {
     if (name == null || name.isEmpty) return 'required';
@@ -79,7 +78,6 @@ class _AccountScreenState extends State<AccountScreen> {
   @override
   void initState() {
     _user = widget._user;
-
     super.initState();
   }
 
@@ -112,7 +110,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           shape: BoxShape.circle,
                           border: Border.all(color: Colors.grey, width: 2)),
                       child: Center(
-                        child: Icon(Icons.person),
+                        child: Image.network(_user.photoURL),
                       ),
                     ),
                     Align(
@@ -194,7 +192,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       controller: _usernameController,
                       decoration: InputDecoration(
                         floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        labelText: "mail",
+                        labelText: _user.displayName,
                       ),
                       validator: _validateUsername,
                     ),
@@ -202,7 +200,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       controller: _contactNoController,
                       decoration: InputDecoration(
                         floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        labelText:"phone",
+                        labelText:_user.email,
                       ),
                       keyboardType: TextInputType.phone,
                       validator: _validateContactNo,
