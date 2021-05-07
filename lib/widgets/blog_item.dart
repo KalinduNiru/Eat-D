@@ -52,18 +52,33 @@ class BlogItem extends StatelessWidget {
                   const EdgeInsets.only(left: 8.0, right: 8, bottom: 8, top: 8),
               child: Row(
                 children: [
-                  Text(
-                    'Read More >>',
-                    style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500),
-                  ),
+
+                  TextButton(onPressed: (){
+                    AlertDialog(
+                      title: Text('Test'),
+                      content: SingleChildScrollView(
+                        child: ListBody(
+                          children: <Widget>[
+                            Text('This is a demo alert dialog.'),
+                            Text('Would you like to approve of this message?'),
+                          ],
+                        ),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: Text('Approve'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                    ),
                   Spacer(),
-                  Icon(
-                    Icons.favorite_border,
-                    color: Colors.red,
-                    size: 20,
+                  IconButton(
+                    icon: new Icon(Icons.arrow_forward_ios),
+                    onPressed: (){},
                   ),
                   SizedBox(width: 4),
                   Text(

@@ -2,12 +2,14 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
-
+import 'package:uuid/uuid.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:random_string/random_string.dart';
 
 import '../utils/blog_service.dart';
+import '../screens/blog_screen.dart';
 
 class CreateBlog extends StatefulWidget {
   static const routeName = '/blog_add';
@@ -27,7 +29,7 @@ class _CreateBlogState extends State<CreateBlog> {
 
 
   DatabaseReference dbRef = FirebaseDatabase.instance.reference().child("Blogs");
-
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   String authorName, title, desc;
   File selectedImage;
@@ -64,7 +66,19 @@ class _CreateBlogState extends State<CreateBlog> {
       var downloadUrl = await (await task).ref.getDownloadURL();
       print("this is url $downloadUrl");
 
-      Map<String, String> blogMap = {
+      final user = _auth.currentUser;
+
+      dbRef.child(Uuid().v4()).set({
+        "imgUrl": downloadUrl,
+        "authorName": authorName,
+        "title": title,
+        "desc": desc,
+        "userid" : user.uid,
+
+      });
+
+
+     /* Map<String, String> blogMap = {
         "imgUrl": downloadUrl,
         "authorName": authorName,
         "title": title,
@@ -72,8 +86,13 @@ class _CreateBlogState extends State<CreateBlog> {
       };
       crudMethods.addData(blogMap).then((result) {
         Navigator.pop(context);
-      });
+      });*/
     } else {}
+  }
+
+  void _blogpage() {
+    Navigator.pushNamedAndRemoveUntil(
+        context, BlogScreen.routeName, (route) => false);
   }
 
   @override
@@ -99,6 +118,7 @@ class _CreateBlogState extends State<CreateBlog> {
           GestureDetector(
             onTap: () {
               uploadBlog();
+              _blogpage();
             },
             child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 16),
@@ -120,6 +140,7 @@ class _CreateBlogState extends State<CreateBlog> {
             GestureDetector(
                 onTap: () {
                   getImage();
+
                 },
                 child: selectedImage != null
                     ? Container(
