@@ -246,7 +246,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         onPressed: () async {
                           if(_formKey.currentState.validate()){
                             _register();
-                            //_login_page();
+                            await _login_page();
                            AlertDialog(
                               title : Text ("Registration"),
                               content : Text ("Registred to Eat'D"),

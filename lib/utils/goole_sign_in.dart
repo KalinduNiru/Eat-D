@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import '../screens/home_screen.dart';
 
 class Authentication {
-  static SnackBar customSnackBar({  String content}) {
+  static SnackBar customSnackBar({String content}) {
     return SnackBar(
       backgroundColor: Colors.black,
       content: Text(
@@ -18,22 +18,20 @@ class Authentication {
   }
 
   static Future<FirebaseApp> initializeFirebase({
-      BuildContext context,
+    BuildContext context,
   }) async {
     FirebaseApp firebaseApp = await Firebase.initializeApp();
 
-    User user =  FirebaseAuth.instance.currentUser;
+    User user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
-
-        Navigator.pushNamed(context, HomeScreen.routeName);
-
+      Navigator.pushNamed(context, HomeScreen.routeName);
     }
 
     return firebaseApp;
   }
 
-  static Future<User> signInWithGoogle({ BuildContext context}) async {
+  static Future<User> signInWithGoogle({BuildContext context}) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     User user;
 
@@ -42,7 +40,7 @@ class Authentication {
 
       try {
         final UserCredential userCredential =
-        await auth.signInWithPopup(authProvider);
+            await auth.signInWithPopup(authProvider);
 
         user = userCredential.user;
       } catch (e) {
@@ -52,11 +50,11 @@ class Authentication {
       final GoogleSignIn googleSignIn = GoogleSignIn();
 
       final GoogleSignInAccount googleSignInAccount =
-      await googleSignIn.signIn();
+          await googleSignIn.signIn();
 
       if (googleSignInAccount != null) {
         final GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignInAccount.authentication;
+            await googleSignInAccount.authentication;
 
         final AuthCredential credential = GoogleAuthProvider.credential(
           accessToken: googleSignInAuthentication.accessToken,
@@ -65,7 +63,7 @@ class Authentication {
 
         try {
           final UserCredential userCredential =
-          await auth.signInWithCredential(credential);
+              await auth.signInWithCredential(credential);
 
           user = userCredential.user;
         } on FirebaseAuthException catch (e) {
@@ -73,14 +71,14 @@ class Authentication {
             ScaffoldMessenger.of(context).showSnackBar(
               Authentication.customSnackBar(
                 content:
-                'The account already exists with a different credential',
+                    'The account already exists with a different credential',
               ),
             );
           } else if (e.code == 'invalid-credential') {
             ScaffoldMessenger.of(context).showSnackBar(
               Authentication.customSnackBar(
                 content:
-                'Error occurred while accessing credentials. Try again.',
+                    'Error occurred while accessing credentials. Try again.',
               ),
             );
           }
@@ -97,7 +95,7 @@ class Authentication {
     return user;
   }
 
-  static Future<void> signOut({ BuildContext context}) async {
+  static Future<void> signOut({BuildContext context}) async {
     final GoogleSignIn googleSignIn = GoogleSignIn();
 
     try {

@@ -8,11 +8,11 @@ import 'package:uuid/uuid.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 
-import '../../constants/app_colors.dart';
-import '../../enum/gender_enum.dart';
-import '../../widgets/CustomDatePickerTextField.dart';
-import '../../utils/enum_util.dart';
-import '../../screens/auth/login_screen.dart';
+import '../constants/app_colors.dart';
+import '../enum/gender_enum.dart';
+import '../widgets/CustomDatePickerTextField.dart';
+import '../utils/enum_util.dart';
+import '../screens/auth/login_screen.dart';
 import 'package:ediclus/models/history_item.dart';
 
 class DailyLogScreen extends StatefulWidget {
@@ -49,12 +49,6 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
 
   bool _success;
   String _userEmail;
-
-
-  void _login_page() {
-    Navigator.pushNamedAndRemoveUntil(
-        context, LogInScreen.routeName, (route) => false);
-  }
 
 
   void _register() {

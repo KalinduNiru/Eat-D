@@ -13,13 +13,14 @@ import '../screens/blog_screen.dart';
 
 class CreateBlog extends StatefulWidget {
   static const routeName = '/blog_add';
+
   @override
   _CreateBlogState createState() => _CreateBlogState();
 }
 
 class _CreateBlogState extends State<CreateBlog> {
-
-  firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+  firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -27,8 +28,8 @@ class _CreateBlogState extends State<CreateBlog> {
   final TextEditingController _title = TextEditingController();
   final TextEditingController _description = TextEditingController();
 
-
-  DatabaseReference dbRef = FirebaseDatabase.instance.reference().child("Blogs");
+  DatabaseReference dbRef =
+      FirebaseDatabase.instance.reference().child("Blogs");
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   String authorName, title, desc;
@@ -37,10 +38,15 @@ class _CreateBlogState extends State<CreateBlog> {
   CrudMethods crudMethods = new CrudMethods();
   final _picker = ImagePicker();
 
+  String _validateDescription(String description) {
+    if (description == null || description.isEmpty || description.length < 25 ) return 'required';
+    return null;
+  }
+
   Future getImage() async {
-     final image = await _picker.getImage(source: ImageSource.gallery);
-     setState(() {
-      selectedImage =  File(image.path);
+    final image = await _picker.getImage(source: ImageSource.gallery);
+    setState(() {
+      selectedImage = File(image.path);
     });
   }
 
@@ -51,17 +57,13 @@ class _CreateBlogState extends State<CreateBlog> {
       });
 
       /// uploading image to firebase storage
-      //StorageReference  = FirebaseStorage.instance
-
-
-
-
-      firebase_storage.Reference firebaseStorageRef = firebase_storage.FirebaseStorage.instance
+      firebase_storage.Reference firebaseStorageRef = firebase_storage
+          .FirebaseStorage.instance
           .ref()
           .child("uploads/$selectedImage");
 
-
-      final  firebase_storage.UploadTask task = firebaseStorageRef.putFile(selectedImage);
+      final firebase_storage.UploadTask task =
+          firebaseStorageRef.putFile(selectedImage);
 
       var downloadUrl = await (await task).ref.getDownloadURL();
       print("this is url $downloadUrl");
@@ -73,20 +75,9 @@ class _CreateBlogState extends State<CreateBlog> {
         "authorName": authorName,
         "title": title,
         "desc": desc,
-        "userid" : user.uid,
-
+        "userid": user.uid,
       });
 
-
-     /* Map<String, String> blogMap = {
-        "imgUrl": downloadUrl,
-        "authorName": authorName,
-        "title": title,
-        "desc": desc
-      };
-      crudMethods.addData(blogMap).then((result) {
-        Navigator.pop(context);
-      });*/
     } else {}
   }
 
@@ -121,83 +112,85 @@ class _CreateBlogState extends State<CreateBlog> {
               _blogpage();
             },
             child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Icon(Icons.file_upload),color: Colors.deepPurple,),
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Icon(Icons.file_upload),
+              color: Colors.deepPurple,
+            ),
           )
         ],
       ),
       body: _isLoading
           ? Container(
-        alignment: Alignment.center,
-        child: CircularProgressIndicator(),
-      )
+              alignment: Alignment.center,
+              child: CircularProgressIndicator(),
+            )
           : Container(
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              height: 10,
-            ),
-            GestureDetector(
-                onTap: () {
-                  getImage();
-
-                },
-                child: selectedImage != null
-                    ? Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16),
-                  height: 170,
-                  width: MediaQuery.of(context).size.width,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(6),
-                    child: Image.file(
-                     selectedImage,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                )
-                    : Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16),
-                  height: 170,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(6)),
-                  width: MediaQuery.of(context).size.width,
-                  child: Icon(
-                    Icons.add_a_photo,
-                    color: Colors.black45,
-                  ),
-                )),
-            SizedBox(
-              height: 8,
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 children: <Widget>[
-                  TextField(
-                    decoration: InputDecoration(hintText: "Author Name"),
-                    onChanged: (val) {
-                      authorName = val;
-                    },
+                  SizedBox(
+                    height: 10,
                   ),
-                  TextField(
-                    decoration: InputDecoration(hintText: "Title"),
-                    onChanged: (val) {
-                      title = val;
-                    },
+                  GestureDetector(
+                      onTap: () {
+                        getImage();
+                      },
+                      child: selectedImage != null
+                          ? Container(
+                              margin: EdgeInsets.symmetric(horizontal: 16),
+                              height: 170,
+                              width: MediaQuery.of(context).size.width,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(6),
+                                child: Image.file(
+                                  selectedImage,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            )
+                          : Container(
+                              margin: EdgeInsets.symmetric(horizontal: 16),
+                              height: 170,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(6)),
+                              width: MediaQuery.of(context).size.width,
+                              child: Icon(
+                                Icons.add_a_photo,
+                                color: Colors.black45,
+                              ),
+                            )),
+                  SizedBox(
+                    height: 8,
                   ),
-                  TextField(
-                    decoration: InputDecoration(hintText: "Desc"),
-                    onChanged: (val) {
-                      desc = val;
-                    },
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      children: <Widget>[
+                        TextField(
+                          decoration: InputDecoration(hintText: "Author Name"),
+                          onChanged: (val) {
+                            authorName = val;
+                          },
+                        ),
+                        TextField(
+                          decoration: InputDecoration(hintText: "Title"),
+                          onChanged: (val) {
+                            title = val;
+                          },
+                        ),
+                        TextFormField(
+                          decoration: InputDecoration(hintText: "Desc"),
+                          onChanged: (val) {
+                            desc = val;
+                          },
+                          validator: _validateDescription,
+                        )
+                      ],
+                    ),
                   )
                 ],
               ),
-            )
-          ],
-        ),
-      ),
+            ),
     );
   }
 }
