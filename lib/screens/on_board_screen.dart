@@ -20,10 +20,10 @@ class OnBoardScreen extends StatefulWidget {
 
 class _OnBoardScreenState extends State<OnBoardScreen> {
   final List<String> images = [
-    'assets/images/carousal1.jpg',
-    'assets/images/carousal2.jpg',
-    'assets/images/carousal1.jpg',
-    'assets/images/carousal2.jpg',
+    'assets/images/eat01.png',
+    'assets/images/eat02.png',
+    'assets/images/eat03.jpg',
+    'assets/images/eat04.jpg',
   ];
   int _currentIndex = 0;
 
@@ -37,7 +37,7 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
               child: Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/images/carousal1.jpg'),
+                    image: AssetImage('assets/images/eat01.png'),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -64,7 +64,7 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
-                                    'Meet edisiuS, your mental health companion; your friend',
+                                    'Meet EatD, your health companion; your friend',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,

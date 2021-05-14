@@ -38,8 +38,8 @@ class _HomeScreenState extends State<HomeScreen>
         'Nam non sapien nec felis ultricies convallis. Maecenas rhoncus sapien non magna placerat vulputate. '
         'Mauris commodo hendrerit nisl vitae faucibus.',
         [
-          'I\'m feel lonely',
-          'What is edicluS',
+          'I\'m feel Hungry',
+          'What is EatD',
         ]),
     Question('How long has this been troubling you?', [
       'Less than one day',

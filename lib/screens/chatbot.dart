@@ -1,4 +1,5 @@
 import 'package:dialog_flowtter/dialog_flowtter.dart';
+import 'package:ediclus/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/chat_body.dart';
@@ -39,7 +40,7 @@ class _ChatbotState extends State<Chatbot> {
               horizontal: 10,
               vertical: 5,
             ),
-            color: Colors.blue,
+            color: AppColors.primaryColor,
             child: Row(
               children: [
                 Expanded(

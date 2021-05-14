@@ -10,13 +10,10 @@ import './../../utils/goole_sign_in.dart';
 import '../../constants/app_colors.dart';
 import '../home_screen.dart';
 
-
 final FirebaseAuth _auth = FirebaseAuth.instance;
+
 class LogInScreen extends StatefulWidget {
   static const routeName = '/login';
-
-
-
 
   @override
   _LogInScreenState createState() => _LogInScreenState();
@@ -59,24 +56,38 @@ class _LogInScreenState extends State<LogInScreen> {
   }
 
   void _signInWithEmailAndPassword() async {
-    final User user = (await _auth.signInWithEmailAndPassword(
-      email: _usernameController.text,
-      password: _passwordController.text,
-    )).user;
+    try {
+      final User user = (await _auth.signInWithEmailAndPassword(
+        email: _usernameController.text,
+        password: _passwordController.text,
+      )).user;
 
-    if (user != null) {
-      setState(() {
-        _success = true;
-        _userEmail = user.email;
-        _onSubmit();
-      });
-    } else {
-      setState(() {
-        _success = false;
-      });
+      if (user != null) {
+        setState(() {
+          _success = true;
+          _userEmail = user.email;
+          _onSubmit();
+        });
+      }
+    } catch (e) {
+      print(e);
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: new Text(e.message),
+              actions: <Widget>[
+                FlatButton(
+                  child: new Text("OK"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -142,32 +153,34 @@ class _LogInScreenState extends State<LogInScreen> {
                         ),
                         padding: EdgeInsets.symmetric(horizontal: 40),
                         onPressed: () async {
-                          if (_formKey.currentState.validate()){
+                          if (_formKey.currentState.validate()) {
                             _signInWithEmailAndPassword();
-
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text('Wrong UserName or Password')));
                           }
                         },
                       ),
                     ),
-                    Padding(padding: const EdgeInsets.all(20.0),
-                        child : SignInButton(
-                          Buttons.Google,
-                          text: "Sign up with Google",
-
-                          onPressed: () async {
-                            setState(() {
-                              _isSigningIn = true;
-                            });
-                            User user = await Authentication.signInWithGoogle(context: context);
-                            setState(() {
-                              _isSigningIn = false;
-                            });
-                            if (user != null){
-                              Navigator.pushNamed(context, HomeScreen.routeName);
-                            }
-                          },
-
-                        ),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: SignInButton(
+                        Buttons.Google,
+                        text: "Sign up with Google",
+                        onPressed: () async {
+                          setState(() {
+                            _isSigningIn = true;
+                          });
+                          User user = await Authentication.signInWithGoogle(
+                              context: context);
+                          setState(() {
+                            _isSigningIn = false;
+                          });
+                          if (user != null) {
+                            Navigator.pushNamed(context, HomeScreen.routeName);
+                          }
+                        },
+                      ),
                     ),
                   ],
                 ),
