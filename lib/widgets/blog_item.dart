@@ -35,7 +35,7 @@ class BlogItem extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              blog.category,
+              blog.author,
               style: TextStyle(fontSize: 14, color: Colors.grey),
             ),
           ),

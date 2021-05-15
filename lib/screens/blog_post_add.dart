@@ -107,9 +107,9 @@ class _CreateBlogState extends State<CreateBlog> {
         elevation: 0.0,
         actions: <Widget>[
           GestureDetector(
-            onTap: () {
+            onTap: () async {
               uploadBlog();
-              _blogpage();
+              await _blogpage();
             },
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16),
@@ -184,6 +184,8 @@ class _CreateBlogState extends State<CreateBlog> {
                             desc = val;
                           },
                           validator: _validateDescription,
+                          minLines: 3,
+                          maxLines: 15,
                         )
                       ],
                     ),

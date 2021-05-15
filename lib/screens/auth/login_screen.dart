@@ -86,6 +86,7 @@ class _LogInScreenState extends State<LogInScreen> {
               ],
             );
           });
+      CircularProgressIndicator();
     }
   }
 
@@ -155,10 +156,8 @@ class _LogInScreenState extends State<LogInScreen> {
                         onPressed: () async {
                           if (_formKey.currentState.validate()) {
                             _signInWithEmailAndPassword();
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text('Wrong UserName or Password')));
                           }
+                          return CircularProgressIndicator();
                         },
                       ),
                     ),
@@ -179,6 +178,7 @@ class _LogInScreenState extends State<LogInScreen> {
                           if (user != null) {
                             Navigator.pushNamed(context, HomeScreen.routeName);
                           }
+
                         },
                       ),
                     ),

@@ -1,8 +1,11 @@
+
 class Blog {
   String title;
-  String category;
+  String author;
   String imgUrl;
+  String description;
   int likes;
 
-  Blog({ this.title,  this.category,  this.imgUrl, this.likes = 0});
+  Blog({ this.title,  this.author,  this.imgUrl, this.likes = 0, this.description});
+
 }

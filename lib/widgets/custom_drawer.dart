@@ -8,6 +8,7 @@ import '../screens/on_board_screen.dart';
 import '../screens/chatbot.dart';
 import '../screens/daily_log.dart';
 import '../screens/alt_chatbot.dart';
+import '../screens/about_us.dart';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -36,7 +37,10 @@ class CustomDrawer extends StatelessWidget {
         Navigator.pushNamed(context, BlogScreen.routeName);
         break;
       case 4 :
-        Navigator.pushNamed(context, AIChatBot.routeName);
+        Navigator.pushNamed(context, Chatbot.routeName);
+        break;
+      case 5 :
+        Navigator.pushNamed(context, AboutUs.routeName);
     }
   }
 
@@ -125,6 +129,7 @@ class CustomDrawer extends StatelessWidget {
                 'About',
                 style: TextStyle(color: AppColors.primaryColor),
               ),
+              onTap: () => _onItemClicked(context, 5),
             ),
             ListTile(
               leading: Icon(

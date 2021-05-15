@@ -1,4 +1,5 @@
 import 'package:after_layout/after_layout.dart';
+import 'package:ediclus/screens/about_us.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
@@ -8,8 +9,11 @@ import '../widgets/custom_drawer.dart';
 import '../widgets/home_list_item.dart';
 import '../widgets/home_widgets/answer_list_widget.dart';
 import '../widgets/home_widgets/question_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../screens/blog_screen.dart';
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class HomeListItemModel {
   String text;
@@ -19,34 +23,37 @@ class HomeListItemModel {
   int selectedAnswer;
 
   HomeListItemModel({this.text, this.answers, this.type, this.questionNo});
+
 }
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/home';
+  User _user = FirebaseAuth.instance.currentUser;
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen>
+
     with AfterLayoutMixin<HomeScreen> {
+
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
-
+  User _user;
   final List<Question> questions = [
     Question(
-        'Nam non sapien nec felis ultricies convallis. Maecenas rhoncus sapien non magna placerat vulputate. '
-        'Mauris commodo hendrerit nisl vitae faucibus.',
+        'Hi, I am EatD. How can I help you ?',
         [
           'I\'m feel Hungry',
-          'What is EatD',
+          'What is EatD ?',
+          'Connect with ChatBot',
+          'Check Blog',
         ]),
-    Question('How long has this been troubling you?', [
-      'Less than one day',
-      'On day to on week',
-      'One week to one month',
-      'One month to one year',
-      'More...',
+    Question('How do you feel?', [
+      'I\'m underweight',
+      'I\'m overweight',
+      'Nothing Special',
     ]),
     Question('How long has this been troubling?', [
       'Less than one day',
@@ -55,12 +62,10 @@ class _HomeScreenState extends State<HomeScreen>
       'One month to one year',
       'More...',
     ]),
-    Question('How long has this been troubling 1?', [
-      'Less than one day',
-      'On day to on week',
-      'One week to one month',
-      'One month to one year',
-      'More...',
+    Question('I am Searching your options.... Please hold with me', [
+      'Okay Sure',
+      'I can\'t wait',
+      'I need a Doctor',
     ]),
   ];
 
@@ -152,7 +157,6 @@ class _HomeScreenState extends State<HomeScreen>
         setState(() {
           _answeredQuestions++;
           print("TestCase001");
-          onPressed: _openWhatisEat();
         });
         _addQuestion2();
         break;
@@ -181,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   void _openWhatisEat(){
     Navigator.pushNamedAndRemoveUntil(
-        context, BlogScreen.routeName, (route) => false);
+        context, AboutUs.routeName, (route) => false);
   }
 
   @override

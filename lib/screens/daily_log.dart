@@ -14,15 +14,13 @@ import '../widgets/CustomDatePickerTextField.dart';
 import '../utils/enum_util.dart';
 import '../screens/auth/login_screen.dart';
 import 'package:ediclus/models/history_item.dart';
+import '../screens/home_screen.dart';
 
 class DailyLogScreen extends StatefulWidget {
   static const routeName = '/dailylog';
 
   @override
   _DailyLogScreenState createState() => _DailyLogScreenState();
-
-
-
 }
 
 class _DailyLogScreenState extends State<DailyLogScreen> {
@@ -32,15 +30,14 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _addnote = TextEditingController();
-  final  _ratingController = TextEditingController(text: '3.0');
+  final _ratingController = TextEditingController(text: '3.0');
   DateTime date = new DateTime.now();
-  DatabaseReference dbRef = FirebaseDatabase.instance.reference().child(
-      "Daily Posts");
+  DatabaseReference dbRef =
+      FirebaseDatabase.instance.reference().child("Daily Posts");
   final note = "";
   List<HistoryItem> _dailylog = [
     HistoryItem(
       id: Uuid().v4(),
-
     )
   ];
 
@@ -50,7 +47,6 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
   bool _success;
   String _userEmail;
 
-
   void _register() {
     final user = _auth.currentUser;
 
@@ -59,10 +55,13 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
       'note': _addnote.text,
       'date': date.toString(),
       'rating': _ratingBarMode,
-
     }).then((res) {
       _success = false;
     });
+  }
+
+  void _home() {
+    Navigator.pushNamed(context, HomeScreen.routeName);
   }
 
   @override
@@ -103,67 +102,26 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: Column(
                   children: [
-
                     TextFormField(
                       controller: _addnote,
                       minLines: 6,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
-
                       decoration: InputDecoration(
                         floatingLabelBehavior: FloatingLabelBehavior.auto,
                         labelText: 'Add your Note',
                         contentPadding: new EdgeInsets.symmetric(
                             vertical: 30.0, horizontal: 10.0),
-
                       ),
-
                     ),
-
-                    Padding(padding: const EdgeInsets.all(20.0),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
                       child: Text('Rate your mood'),
                     ),
-                    Padding(padding: const EdgeInsets.all(20.0),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
                       child: _ratingBar(_ratingBarMode),
-
                     ),
-                    
-                    /*RatingBar.builder(
-                      initialRating: 3,
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        switch (index) {
-                          case 0:
-                            return Icon(
-                              Icons.sentiment_very_dissatisfied,
-                              color: Colors.red,
-                            );
-                          case 1:
-                            return Icon(
-                              Icons.sentiment_dissatisfied,
-                              color: Colors.redAccent,
-                            );
-                          case 2:
-                            return Icon(
-                              Icons.sentiment_neutral,
-                              color: Colors.amber,
-                            );
-                          case 3:
-                            return Icon(
-                              Icons.sentiment_satisfied,
-                              color: Colors.lightGreen,
-                            );
-                          case 4:
-                            return Icon(
-                              Icons.sentiment_very_satisfied,
-                              color: Colors.green,
-                            );
-                        }
-                      },
-                      onRatingUpdate: (rating) {
-                        return Text(rating.toString());
-                      },
-                    ),*/
                     Padding(
                       padding: const EdgeInsets.all(40.0),
                       child: RaisedButton(
@@ -184,12 +142,10 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
                         onPressed: () async {
                           if (_formKey.currentState.validate()) {
                             _register();
-                            //_login_page();
-
-
+                            _addnote.clear();
+                            await _home();
                           }
                         },
-
                       ),
                     ),
                   ],
@@ -201,7 +157,6 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
       ),
     );
   }
-
 
   Widget _ratingBar(int mode) {
     return RatingBar.builder(
@@ -247,5 +202,4 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
       updateOnDrag: true,
     );
   }
-
 }

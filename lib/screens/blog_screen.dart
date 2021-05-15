@@ -8,6 +8,7 @@ import 'package:firebase_database/firebase_database.dart';
 
 import '../screens/blog_post_add.dart';
 
+
 class BlogScreen extends StatefulWidget {
   static const routeName = '/blog';
 
@@ -23,27 +24,6 @@ class _BlogScreenState extends State<BlogScreen> {
   final dbRef = FirebaseDatabase.instance.reference().child("Blogs");
 
   List<Map<dynamic, dynamic>> blog_lists = [];
-  List<Blog> _blogList = [
-    Blog(
-        title: 'Choose your friends wisely',
-        category: 'Life',
-        imgUrl:
-            'https://images.unsplash.com/photo-1524601500432-1e1a4c71d692?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MXx8YmVzdCUyMGZyaWVuZHN8ZW58MHx8MHw%3D&ixlib=rb-1.2.1&w=1000&q=80',
-        likes: 250),
-    Blog(
-        title: 'Choose your friends wisely',
-        category: 'Life',
-        imgUrl:
-            'https://images.unsplash.com/photo-1524601500432-1e1a4c71d692?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MXx8YmVzdCUyMGZyaWVuZHN8ZW58MHx8MHw%3D&ixlib=rb-1.2.1&w=1000&q=80',
-        likes: 250),
-    Blog(
-        title: 'Choose your friends wisely',
-        category: 'Life',
-        imgUrl:
-            'https://images.unsplash.com/photo-1524601500432-1e1a4c71d692?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MXx8YmVzdCUyMGZyaWVuZHN8ZW58MHx8MHw%3D&ixlib=rb-1.2.1&w=1000&q=80',
-        likes: 250),
-  ];
-
   List<BlogVideo> _videoList = [
     BlogVideo(
       videoUrl: 'some url',
@@ -70,6 +50,8 @@ class _BlogScreenState extends State<BlogScreen> {
   bool isEdgeIndex(int index) {
     return index == index;
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -175,30 +157,22 @@ class _BlogScreenState extends State<BlogScreen> {
                                               TextButton(
                                                 child: Text("Read More"),
                                                 onPressed: () {
-                                                  AlertDialog(
-                                                    title: Text(
-                                                        blog_lists[index]
-                                                            ["title"]),
-                                                    content:
-                                                        SingleChildScrollView(
-                                                      child: ListBody(
-                                                        children: <Widget>[
-                                                          Text(blog_lists[index]
-                                                              ["desc"]),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    actions: <Widget>[
-                                                      TextButton(
-                                                        child: Text(
-                                                            'Read Another'),
-                                                        onPressed: () {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                        },
-                                                      ),
-                                                    ],
-                                                  );
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext context) {
+                                                        return AlertDialog(
+                                                          title: new Text(blog_lists[index]["title"]),
+                                                          content: new Text(blog_lists[index]["desc"]),
+                                                          actions: <Widget>[
+                                                            new FlatButton(
+                                                              child: new Text("OK"),
+                                                              onPressed: () {
+                                                                Navigator.of(context).pop();
+                                                              },
+                                                            ),
+                                                          ],
+                                                        );
+                                                      });
                                                 },
                                               ),
                                               Spacer(),
@@ -297,6 +271,9 @@ class _BlogScreenState extends State<BlogScreen> {
                 );
               }
               return CircularProgressIndicator();
+
             }));
+
   }
+
 }

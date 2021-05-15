@@ -61,6 +61,7 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
                             padding: EdgeInsets.symmetric(horizontal: 10),
                             child: Column(
                               children: [
+                                SizedBox(height: 35.0,),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
@@ -71,14 +72,7 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
                                         fontSize: 18),
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(2.0),
-                                  child: Text(
-                                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tempus ac arcu eget interdum. ',
 
-                                    textAlign: TextAlign.center,
-                                  ),
-                                )
                               ],
                             ),
                           ),

@@ -212,21 +212,7 @@ class HistoryScreen extends StatelessWidget {
                     ),
                   ),
                 );
-                /*ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: lists.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Card(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text("Date: " + lists[index]["date"]),
-                            Text("Note: " + lists[index]["note"]),
 
-                          ],
-                        ),
-                      );
-                    });*/
               }
               return CircularProgressIndicator();
             }));

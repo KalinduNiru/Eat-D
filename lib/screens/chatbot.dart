@@ -29,8 +29,18 @@ class _ChatbotState extends State<Chatbot> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title ?? 'EatD Live Assistent'),
+      appBar:  AppBar(
+        title: Text('EatD Assistant Chatbot', style: TextStyle(color: Colors.black)),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: AppColors.iconColor,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            }),
       ),
       body: Column(
         children: [
@@ -40,23 +50,25 @@ class _ChatbotState extends State<Chatbot> {
               horizontal: 10,
               vertical: 5,
             ),
-            color: AppColors.primaryColor,
+            color: Colors.white,
             child: Row(
               children: [
                 Expanded(
                   child: TextField(
                     controller: _controller,
-                    style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      icon: Icon(Icons.message,
+                      color: AppColors.primaryColor,),
+                      hintText: "Say 'Hi' to EatD...",
+                      fillColor: Colors.white12),
+                    textInputAction: TextInputAction.send,
+                    onSubmitted:(msg){
+                      sendMessage(_controller.text);
+                      _controller.clear();
+                    },
                   ),
                 ),
-                IconButton(
-                  color: Colors.white,
-                  icon: Icon(Icons.send),
-                  onPressed: () {
-                    sendMessage(_controller.text);
-                    _controller.clear();
-                  },
-                ),
+
               ],
             ),
           ),
