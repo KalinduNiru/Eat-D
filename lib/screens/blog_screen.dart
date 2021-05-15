@@ -162,7 +162,17 @@ class _BlogScreenState extends State<BlogScreen> {
                                                       builder: (BuildContext context) {
                                                         return AlertDialog(
                                                           title: new Text(blog_lists[index]["title"]),
-                                                          content: new Text(blog_lists[index]["desc"]),
+                                                          content: Container(
+                                                            height: 700,
+                                                            width: 500,
+                                                            child: SingleChildScrollView(
+                                                              child: Column(
+                                                                children: [
+                                                                  new Text(blog_lists[index]["desc"]),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
                                                           actions: <Widget>[
                                                             new FlatButton(
                                                               child: new Text("OK"),
