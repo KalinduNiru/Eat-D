@@ -135,6 +135,7 @@ class _LogInScreenState extends State<LogInScreen> {
                         labelText: 'Password',
                       ),
                       validator: _validatePassword,
+                      obscureText: true,
                     ),
                     Padding(
                       padding: const EdgeInsets.all(20.0),

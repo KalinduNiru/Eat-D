@@ -53,7 +53,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   String _validatePassword(String password) {
-    if (password == null || password.isEmpty) return 'required';
+    if (password == null || password.isEmpty || password.length < 6) return 'required';
     return null;
   }
 
@@ -217,6 +217,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         labelText: 'Password',
                       ),
                       validator: _validatePassword,
+                      obscureText: true,
                     ),
                     TextFormField(
                       controller: _confirmPasswordController,
@@ -225,6 +226,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         labelText: 'Confirm Password',
                       ),
                       validator: _validateConfirmPassword,
+                      obscureText: true,
                     ),
                     Padding(
                       padding: const EdgeInsets.all(20.0),
