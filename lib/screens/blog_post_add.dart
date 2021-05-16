@@ -39,8 +39,13 @@ class _CreateBlogState extends State<CreateBlog> {
   final _picker = ImagePicker();
 
   String _validateDescription(String description) {
-    if (description == null || description.isEmpty || description.length < 25 ) return 'required';
-    return null;
+    if (description == null || description.isEmpty){
+      return 'required';}
+    if (description.length < 25){
+    return 'Please enter more than 25 characters';}
+    else{
+      return null;
+    }
   }
 
   Future getImage() async {
@@ -77,7 +82,6 @@ class _CreateBlogState extends State<CreateBlog> {
         "desc": desc,
         "userid": user.uid,
       });
-
     } else {}
   }
 
@@ -108,8 +112,10 @@ class _CreateBlogState extends State<CreateBlog> {
         actions: <Widget>[
           GestureDetector(
             onTap: () async {
-              uploadBlog();
-              await _blogpage();
+              if (_formKey.currentState.validate()) {
+                uploadBlog();
+                await _blogpage();
+              }
             },
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16),
@@ -166,27 +172,35 @@ class _CreateBlogState extends State<CreateBlog> {
                     margin: EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
                       children: <Widget>[
-                        TextField(
-                          decoration: InputDecoration(hintText: "Author Name"),
-                          onChanged: (val) {
-                            authorName = val;
-                          },
-                        ),
-                        TextField(
-                          decoration: InputDecoration(hintText: "Title"),
-                          onChanged: (val) {
-                            title = val;
-                          },
-                        ),
-                        TextFormField(
-                          decoration: InputDecoration(hintText: "Desc"),
-                          onChanged: (val) {
-                            desc = val;
-                          },
-                          validator: _validateDescription,
-                          minLines: 3,
-                          maxLines: 15,
-                        )
+                        Form(
+                            key: _formKey,
+                            child: Column(
+                              children: [
+                                TextField(
+                                  decoration:
+                                      InputDecoration(hintText: "Author Name"),
+                                  onChanged: (val) {
+                                    authorName = val;
+                                  },
+                                ),
+                                TextField(
+                                  decoration:
+                                      InputDecoration(hintText: "Title"),
+                                  onChanged: (val) {
+                                    title = val;
+                                  },
+                                ),
+                                TextFormField(
+                                  decoration: InputDecoration(hintText: "Desc"),
+                                  onChanged: (val) {
+                                    desc = val;
+                                  },
+                                  validator: _validateDescription,
+                                  minLines: 3,
+                                  maxLines: 6,
+                                )
+                              ],
+                            )),
                       ],
                     ),
                   )

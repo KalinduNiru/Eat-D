@@ -5,20 +5,18 @@ import '../constants/app_colors.dart';
 import '../widgets/round_raised_button.dart';
 import '../screens/auth/login_screen.dart';
 import '../screens/auth/register_screen.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../screens/home_screen.dart';
 
 class OnBoardScreen extends StatefulWidget {
   static const routeName = '/on-board';
 
-
-
   @override
-
   _OnBoardScreenState createState() => _OnBoardScreenState();
-
 }
 
 class _OnBoardScreenState extends State<OnBoardScreen> {
+  final User _user = FirebaseAuth.instance.currentUser;
   final List<String> images = [
     'assets/images/eat01.png',
     'assets/images/eat02.png',
@@ -61,7 +59,9 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
                             padding: EdgeInsets.symmetric(horizontal: 10),
                             child: Column(
                               children: [
-                                SizedBox(height: 35.0,),
+                                SizedBox(
+                                  height: 35.0,
+                                ),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
@@ -72,7 +72,6 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
                                         fontSize: 18),
                                   ),
                                 ),
-
                               ],
                             ),
                           ),
@@ -105,12 +104,17 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
                   Navigator.pushNamed(context, RegisterScreen.routeName),
             ),
             RoundRaisedButton(
-              text: 'Log in',
-              textColor: AppColors.primaryColor,
-              bgColor: Colors.white,
-              borderColor: AppColors.primaryColor,
-              onTap: () => Navigator.pushNamed(context, LogInScreen.routeName),
-            ),
+                text: 'Log in',
+                textColor: AppColors.primaryColor,
+                bgColor: Colors.white,
+                borderColor: AppColors.primaryColor,
+                onTap: () {
+                  if (_user != null) {
+                    Navigator.pushNamed(context, HomeScreen.routeName);
+                  } else {
+                    Navigator.pushNamed(context, LogInScreen.routeName);
+                  }
+                }),
             Align(
               alignment: Alignment.topLeft,
               child: SizedBox(

@@ -78,26 +78,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         context, LogInScreen.routeName, (route) => false);
   }
   
-
-  /*void _register() async {
-    final User user = (await
-    _auth.createUserWithEmailAndPassword(
-      email: _usernameController.text,
-      password: _passwordController.text,
-    )
-    ).user;
-    if (user != null) {
-      setState(() {
-        _success = true;
-        _userEmail = user.email;
-      });
-    } else {
-      setState(() {
-        _success = true;
-      });
-    }
-  }*/
-
   void _register(){
     _auth.createUserWithEmailAndPassword(email: _usernameController.text, password: _passwordController.text)
         .then((result) {
